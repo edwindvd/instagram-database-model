@@ -13,16 +13,14 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(250), nullable=False)
     username = Column(String(15), nullable=False, unique=True)
-    password = Column(String(20), nullable=False, unique=True)
+    password = Column(String(20), nullable=False)
     follower = relationship('Follower')
     post = relationship('Post')
-    comment = relationship('Comment')
 
 class Post(Base):
     __tablename__ = 'post'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    follower_id = Column(Integer, ForeignKey('follower.id'))
     comment = relationship('Comment')
     media = relationship('Media')
 
@@ -30,13 +28,12 @@ class Comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key=True)
     comment_text = Column(String(250), nullable=False)
-    user_id = Column(Integer, ForeignKey('user.id'))
-    post_id = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('post.id'))
 
 class Media(Base):
     __tablename__ = 'media'
     id = Column(Integer, primary_key=True)
-    post_id = Column(Integer, ForeignKey('post.id'))
+    user_id = Column(Integer, ForeignKey('post.id'))
     url = Column(String(250), nullable=False)
 
 class follower(Base):
@@ -50,7 +47,7 @@ class follower(Base):
 
 ## Draw from SQLAlchemy base
 try:
-    result = render_er(Base, 'diagram.png')
+    result = render_er(Base, 'diagram2.png')
     print("Success! Check the diagram.png file")
 except Exception as e:
     print("There was a problem genering the diagram")
